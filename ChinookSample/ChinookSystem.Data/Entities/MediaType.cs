@@ -25,7 +25,7 @@ namespace ChinookSystem.Data.Entities
 
         [Key]
         public int MediaTypeId { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         //Navigation properties for use by Linq
         //these properties will be of type virtual
