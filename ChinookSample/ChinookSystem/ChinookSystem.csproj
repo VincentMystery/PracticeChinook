@@ -49,12 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\ArtistController.cs" />
+    <Compile Include="DAL\ChinookContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BLL\" />
-    <Folder Include="DAL\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\ChinookSystem.Data\ChinookSystem.Data.csproj">
       <Project>{0767076e-0a45-4580-8f58-28c7b946b9c2}</Project>
