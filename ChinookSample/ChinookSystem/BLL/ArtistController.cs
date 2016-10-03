@@ -33,7 +33,7 @@ namespace ChinookSystem.BLL
         //this will use Linq to entity access
         //POCO classes will be used to define the data
         [DataObjectMethod(DataObjectMethodType.Select, false)]
-        public List<ArtistAlbums> ArtistAlbum_Get()
+        public List<ArtistAlbums> ArtistAlbum_Get(int year)
         {
 
             //when you bring your query form linqPad to your program
@@ -47,7 +47,7 @@ namespace ChinookSystem.BLL
             using (var context = new ChinookContext())
             {
                 var results = from x in context.Albums
-                              where x.ReleaseYear == 2008
+                              where x.ReleaseYear == year
                               orderby x.Artists.Name, x.Title
                               select new ArtistAlbums
                               {

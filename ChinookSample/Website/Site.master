@@ -49,11 +49,30 @@
                     <a class="navbar-brand" runat="server" href="~/">Application name</a>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
-                        <li><a runat="server" href="~/Contact">Contact</a></li>
-                    </ul>
+                   
+<%-- to create a workable drop down menu use a asp:Menu control and locate it here imediately after the asp:login view --%>
+
+                    <asp:Menu ID="navMenu" runat="server"
+                        BackColor="#000000"
+                        BorderColor="Red"
+                        StaticMenuItemStyle-ForeColor="#999999"
+                        StaticMenuItemStyle-VerticalPadding="10px"
+                        StaticMenuItemStyle-HorizontalPadding="10px"
+                        RenderingMode="List" Orientation="Horizontal"
+                        DynamicMenuItemStyle-ForeColor="#999999"
+                        DynamicMenuStyle-BackColor="Black">
+
+                        <Items>
+                            <asp:MenuItem Text="Home" NavigateUrl="~/"></asp:MenuItem>
+                            <asp:MenuItem Text="Queries" Value="ddlPages">
+                                <asp:MenuItem Text="FirstSample" NavigateUrl="~/Queries/FirstSample"></asp:MenuItem>
+                                <asp:MenuItem Text="RepresentitiveCustomers" NavigateUrl="~/Queries/RepresentitiveCustomers"></asp:MenuItem>
+                            </asp:MenuItem>
+                            <asp:MenuItem Text="Page 3" NavigateUrl="~/MorePages/page3"></asp:MenuItem>
+                            <asp:MenuItem Text="About" NavigateUrl="~/About"></asp:MenuItem>
+                            <asp:MenuItem Text="Contact" NavigateUrl="~/Contact"></asp:MenuItem>
+                        </Items>
+                    </asp:Menu>
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
@@ -70,30 +89,6 @@
                             </ul>
                         </LoggedInTemplate>
                     </asp:LoginView>
-<%-- to create a workable drop down menu use a asp:Menu control and locate it here imediately after the asp:login view --%>
-
-                    <asp:Menu ID="navMenu" runat="server"
-                        BackColor="#000000"
-                        BorderColor="Red"
-                        StaticMenuItemStyle-ForeColor="#999999"
-                        StaticMenuItemStyle-VerticalPadding="10px"
-                        StaticMenuItemStyle-HorizontalPadding="10px"
-                        RenderingMode="List" Orientation="Horizontal"
-                        DynamicMenuItemStyle-ForeColor="#999999"
-                        DynamicMenuStyle-BackColor="Black">
-
-                        <Items>
-                            <asp:MenuItem Text="Home" NavigateUrl="~/"></asp:MenuItem>
-                            <asp:MenuItem Text="DDLPages" Value="ddlPages">
-                                <asp:MenuItem Text="Page 1" NavigateUrl="~/MorePages/page1"></asp:MenuItem>
-                                <asp:MenuItem Text="Page 2" NavigateUrl="~/MorePages/page2"></asp:MenuItem>
-                            </asp:MenuItem>
-
-                            <asp:MenuItem Text="Page 3" NavigateUrl="~/MorePages/page3"></asp:MenuItem>
-                            <asp:MenuItem Text="About" NavigateUrl="~/About"></asp:MenuItem>
-                            <asp:MenuItem Text="Contact" NavigateUrl="~/Contact"></asp:MenuItem>
-                        </Items>
-                    </asp:Menu>
                 </div>
             </div>
         </div>
