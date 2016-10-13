@@ -66,6 +66,7 @@
     <Compile Include="Security\ApplicationDbContext.cs" />
     <Compile Include="Security\ApplicationUser.cs" />
     <Compile Include="Security\RoleManager.cs" />
+    <Compile Include="Security\SecurtityRoles.cs" />
     <Compile Include="Security\UserManager.cs" />
   </ItemGroup>
   <ItemGroup />
