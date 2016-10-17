@@ -11,13 +11,13 @@
     </asp:GridView>
     <asp:GridView ID="LinqToEntityList" runat="server" AutoGenerateColumns="False" DataSourceID="LinqTOEntityODS">
         <Columns>
+            <asp:BoundField DataField="ArtistId" HeaderText="ArtistId" SortExpression="ArtistId"></asp:BoundField>
             <asp:BoundField DataField="Name" HeaderText="Name" SortExpression="Name"></asp:BoundField>
-            <asp:BoundField DataField="Title" HeaderText="Title" SortExpression="Title"></asp:BoundField>
         </Columns>
     </asp:GridView>
 
     <asp:ObjectDataSource ID="EntityFrameworkODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Artist_ListAll" TypeName="ChinookSystem.BLL.ArtistController"></asp:ObjectDataSource>
-    <asp:ObjectDataSource ID="LinqTOEntityODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="ArtistAlbum_Get" TypeName="ChinookSystem.BLL.ArtistController"></asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="LinqTOEntityODS" runat="server" OldValuesParameterFormatString="original_{0}" SelectMethod="Artist_ListAll" TypeName="ChinookSystem.BLL.ArtistController"></asp:ObjectDataSource>
 </asp:Content>
 
 

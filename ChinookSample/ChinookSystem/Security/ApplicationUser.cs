@@ -14,7 +14,6 @@ namespace ChinookSystem.Security
     // please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        
         public int? EmployeeId { get; set; }
         public int? CustomerId { get; set; }
     }
