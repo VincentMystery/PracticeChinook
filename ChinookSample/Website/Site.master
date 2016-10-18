@@ -68,7 +68,7 @@
                                 <asp:MenuItem Text="FirstSample" NavigateUrl="~/Queries/FirstSample"></asp:MenuItem>
                                 <asp:MenuItem Text="RepresentitiveCustomers" NavigateUrl="~/Queries/RepresentitiveCustomers"></asp:MenuItem>
                             </asp:MenuItem>
-                            <asp:MenuItem Text="Page 3" NavigateUrl="~/MorePages/page3"></asp:MenuItem>
+                            <asp:MenuItem Text="Users/Roles" NavigateUrl="~/Admin/Security/Default"></asp:MenuItem>
                             <asp:MenuItem Text="About" NavigateUrl="~/About"></asp:MenuItem>
                             <asp:MenuItem Text="Contact" NavigateUrl="~/Contact"></asp:MenuItem>
                         </Items>
