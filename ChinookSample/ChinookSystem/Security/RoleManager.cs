@@ -25,7 +25,7 @@ namespace ChinookSystem.Security
         //(Internet Information Services)
         public void AddStartUpRoles()
         {
-            foreach (string rolename in SecurtityRoles.StartupSecurityRoles)
+            foreach (string rolename in SecurityRoles.StartupSecurityRoles)
             {
                 //check if the role already exists in the security tables located in the database
                 if (!Roles.Any(r => r.Name.Equals(rolename)))
