@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChinookSystem.Security
 {
-    class UserProfile
+    public class UserProfile
     {
         public string UserId { get; set; }   //AspNetUser
         public string UserName { get; set; } //AspNetUser
@@ -15,7 +15,7 @@ namespace ChinookSystem.Security
         public string FirstName { get; set; } //Employee table OR Customer Table
         public string LastName { get; set; }  //Employee table OR Customer Table
         public string Email { get; set; } //AspNetUser
-        public string EmailConfirmed { get; set; } //AspNetUser
+        public bool EmailConfirmed { get; set; } //AspNetUser
         public IEnumerable<string> RoleMemberships { get; set; }
     }
 }

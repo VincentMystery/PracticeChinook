@@ -23,7 +23,7 @@ public partial class Queries_FirstSample : System.Web.UI.Page
             else
             {
                 //are you allowed to be on this page
-                if (!User.IsInRole(SecurtityRoles.WebsiteAdmins))
+                if (!User.IsInRole(SecurityRoles.WebsiteAdmins))
                 {
                     Response.Redirect("~/Default.aspx");
                 }

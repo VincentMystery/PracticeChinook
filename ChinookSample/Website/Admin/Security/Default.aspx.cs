@@ -54,11 +54,11 @@ public partial class Admin_Security_Default : System.Web.UI.Page
             //columns are index (starting at 0)
             UnregisteredUserProfile user = new UnregisteredUserProfile()
             {
-                UserID = int.Parse(UnregisteredUsersGridView.SelectedDataKey.Value.ToString()),
+                CustomerEmployeeId = int.Parse(UnregisteredUsersGridView.SelectedDataKey.Value.ToString()),
                 UserType = (UnRegisteredUserType)Enum.Parse(typeof(UnRegisteredUserType), agvrow.Cells[1].Text),
                 FirstName = agvrow.Cells[2].Text,
-                UserName = assignedusername,
-                Email = assignedemail
+                AssignedUserName = assignedusername,
+                AssignedEmail = assignedemail
             };
 
             UserManager sysmgr = new UserManager();
@@ -67,6 +67,35 @@ public partial class Admin_Security_Default : System.Web.UI.Page
             //assume successful creation of a user
             //refresh the form.
             DataBind();
+        }
+    }
+
+    protected void UserListView_ItemInserting(object sender, ListViewInsertEventArgs e)
+    {
+        // one needs to walk through the checkbox list
+
+        //create the role membership string List<> of selected roles
+        var addtoroles = new List<string>();
+
+        //point to the physical checkbox list control.
+        var roles = e.Item.FindControl("RoleMemberships") as CheckBoxList;
+
+        //does the control exist -safety check
+        if (roles != null)
+        {
+            //cycle through the checkbox list
+            //find which roles have been selected (checked)
+            //add to the List<string>
+            //assign the List<string> to the inserting instance represented by e
+            foreach (ListItem role in roles.Items)
+            {
+                if (role.Selected)
+                {
+                    addtoroles.Add(role.Value);
+                }
+
+                e.Values["RoleMemberships"] = addtoroles;
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity.EntityFramework; //UserStore
 using Microsoft.AspNet.Identity;                 //UserManager
 using System.ComponentModel;                     //ODS
 using ChinookSystem.DAL;                         //Context
+using ChinookSystem.Data.Entities;               //Entity classes
 #endregion
 
 namespace ChinookSystem.Security
@@ -68,13 +69,10 @@ namespace ChinookSystem.Security
                                             where !resisteredEmployees.Any(eid => emp.EmployeeId == eid)
                                             select new UnregisteredUserProfile
                                             {
-                                                UserID = emp.EmployeeId
-                                                ,
-                                                FirstName = emp.FirstName
-                                                ,
-                                                LastName = emp.LastName
-                                                ,
-                                                UserType = UnRegisteredUserType.Employee
+                                                CustomerEmployeeId = emp.EmployeeId
+                                                , FirstName = emp.FirstName
+                                                , LastName = emp.LastName
+                                                , UserType = UnRegisteredUserType.Employee
                                             }).ToList();
 
                 //List() set containing a list of customers
@@ -87,7 +85,7 @@ namespace ChinookSystem.Security
                                             where !resisteredCustomers.Any(cid => cust.CustomerId == cid)
                                             select new UnregisteredUserProfile
                                             {
-                                                UserID = cust.CustomerId
+                                                CustomerEmployeeId = cust.CustomerId
                                                 , FirstName = cust.FirstName
                                                 , LastName = cust.LastName
                                                 , UserType = UnRegisteredUserType.Customer
@@ -108,8 +106,8 @@ namespace ChinookSystem.Security
             //the instance of the required user is based on our ApplicationUser
             var newUserAccount = new ApplicationUser()
             {
-                UserName = userinfo.UserName,
-                Email = userinfo.Email
+                UserName = userinfo.AssignedUserName,
+                Email = userinfo.AssignedEmail
             };
 
             //set the customerId or EmployeeId
@@ -117,12 +115,12 @@ namespace ChinookSystem.Security
             {
                 case UnRegisteredUserType.Customer:
                     {
-                        newUserAccount.Id = userinfo.UserID.ToString();
+                        newUserAccount.CustomerId = userinfo.CustomerEmployeeId;
                         break;
                     }
                 case UnRegisteredUserType.Employee:
                     {
-                        newUserAccount.Id = userinfo.UserID.ToString();
+                        newUserAccount.EmployeeId = userinfo.CustomerEmployeeId;
                         break;
                     }
             }
@@ -131,17 +129,17 @@ namespace ChinookSystem.Security
             this.Create(newUserAccount, STR_DEFAULT_PASSWORD);
 
             //assign user to an appropriate role
+            //uses the guid like user id from the User's table
             switch (userinfo.UserType)
             {
                 case UnRegisteredUserType.Customer:
                     {
-      //                  newUserAccount.Id = userinfo
                         this.AddToRole(newUserAccount.Id, SecurityRoles.RegisteredUsers);
                         break;
                     }
                 case UnRegisteredUserType.Employee:
                     {
-     //TODO                   this.AddToRole(newUserAccount.Id, SecurityRoles.Staff);
+                        this.AddToRole(newUserAccount.Id, SecurityRoles.Staff);
                         break;
                     }
             }
@@ -149,11 +147,108 @@ namespace ChinookSystem.Security
 
         }//End of RegisterUser()
 
+        //list all current users
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<UserProfile> ListAllUsers()
+        {
+            //we will be using the role manager to get roles
+            var rm = new RoleManager();
+
+            //get the current users off the User security table
+            var results = from person in Users.ToList()
+                          select new UserProfile()
+                          {
+                              UserId = person.Id
+                              , UserName = person.UserName
+                              , Email = person.Email
+                              , EmailConfirmed = person.EmailConfirmed
+                              , CustomerId = person.CustomerId
+                              , EmployeeId = person.EmployeeId
+                              , RoleMemberships = person.Roles.Select(r => rm.FindById(r.RoleId).Name)
+                          };
+            //using our own data tables gather the user firstname and lastname
+            using (var context = new ChinookContext())
+            {
+                Employee eTemp;
+                Customer cTemp;
+
+                foreach (var person in results)
+                {
+                    if (person.EmployeeId.HasValue)
+                    {
+                        eTemp = context.Employees.Find(person.EmployeeId);
+                        person.FirstName = eTemp.FirstName;
+                        person.LastName = eTemp.LastName;
+                    }
+                    else if (person.CustomerId.HasValue)
+                    {
+                        cTemp = context.Customers.Find(person.CustomerId);
+                        person.FirstName = cTemp.FirstName;
+                        person.LastName = cTemp.LastName;
+                    }
+                    else
+                    {
+                        person.FirstName = "Unknown";
+                        person.LastName = "";
+                    }
+                }
+            }
+
+            return results.ToList();
+
+        }// End of ListAllUsers
+
         //add a user to the User Table (ListView)
+        [DataObjectMethod(DataObjectMethodType.Insert, true)]
+        public void AddUser(UserProfile userinfo)
+        {
+            //create an instance representing the new user
+            var useraccount = new ApplicationUser()
+            {
+                UserName = userinfo.UserName
+                ,
+                Email = userinfo.Email
+            };
+
+            //create th enew user on the physical Usaers table
+            this.Create(useraccount, STR_DEFAULT_PASSWORD);
+
+            //create the UserRoles which were choosen at insert time
+            foreach (var roleName in userinfo.RoleMemberships)
+            {
+                this.AddToRole(useraccount.Id, roleName);
+            }
+        }// End of AddUser()
 
 
         //delete a user from the User Table (ListView)
+        [DataObjectMethod(DataObjectMethodType.Delete, true)]
+        public void RemoveUser(UserProfile userinfo)
+        {
+            //Business Rules:
+            //the webmaster cannot be deleted
 
+            //realize the only info you have at this time is the
+            //DataKeyNames value which is the User ID (on the User Security table the feild is id)
+
+            //obtain the username from the security user table using the User ID value
+            string username = this.Users
+                              .Where(u => u.Id == userinfo.UserId)
+                              .Select(u => u.UserName)
+                              .SingleOrDefault()
+                              .ToString();
+
+            //remove user
+            if (username.Equals(STR_WEBMASTER_USERNAME))
+            {
+                throw new Exception("The Webmaster account cannot be removed.");
+            }
+            else
+            {
+                this.Delete(this.FindById(userinfo.UserId));
+            }
+
+        }// End of RemoveUser()
 
 
     }// End of UserManager
