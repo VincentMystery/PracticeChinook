@@ -14,19 +14,19 @@ using ChinookSystem.DAL;
 namespace ChinookSystem.BLL
 {
     [DataObject]
-    public class AlbumController
+    public class GenreController
     {
-        [DataObjectMethod(DataObjectMethodType.Select,false)]
-        public List<ForeignKeyList> AlbumList ()
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<ForeignKeyList> GenreList()
         {
             using (var context = new ChinookContext())
             {
-                var results = from x in context.Albums
-                              orderby x.Title
+                var results = from x in context.Genres
+                              orderby x.Name
                               select new ForeignKeyList()
                               {
-                                  PFKeyIdentifier = x.AlbumId,
-                                  DisplayText = x.Title
+                                  PFKeyIdentifier = x.GenreId,
+                                  DisplayText = x.Name
                               };
                 return results.ToList();
             }

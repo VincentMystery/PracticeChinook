@@ -48,11 +48,11 @@ namespace ChinookSystem.BLL
             {
                 var results = from x in context.Albums
                               where x.ReleaseYear == year
-                              orderby x.Artists.Name, x.Title
+                              orderby x.Artist.Name, x.Title
                               select new ArtistAlbums
                               {
                                   //naem and title are POCO class property names
-                                 Name = x.Artists.Name
+                                 Name = x.Artist.Name
                                  , Title = x.Title
                               };
                 //The following requires the query data in memory  .ToList()

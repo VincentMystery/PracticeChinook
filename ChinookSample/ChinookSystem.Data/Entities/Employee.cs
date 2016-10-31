@@ -4,23 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#region Adittional Namespaces
+#region Additional Namespaces
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 #endregion
 
 namespace ChinookSystem.Data.Entities
 {
-    [Table("Employees")]
     public class Employee
     {
-        [Key]
         public int EmployeeId { get; set; }
-        public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FirstName { get; set; }
         public string Title { get; set; }
-        public int? ReportsTo { get; set; }
-        public DateTime? Birthdate { get; set; }
+        public int? ReportTo { get; set; }
+        public DateTime? BirthDate { get; set; }
         public DateTime? HireDate { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
@@ -32,5 +30,6 @@ namespace ChinookSystem.Data.Entities
         public string Email { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
+
     }
 }
