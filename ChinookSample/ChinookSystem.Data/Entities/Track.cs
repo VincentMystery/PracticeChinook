@@ -25,15 +25,44 @@ namespace ChinookSystem.Data.Entities
         //property names should use sql attribute name
         //properties should be listed in the same order
         //     as sql table attributes for easy of maintenance
+
+        //Entity Validation:
+        //This is validation that kicks in when the .SaveChange command is executed.
+        //4 most common:
+        //[Required](ErrorMessage="____")]
+        //[StringLength(int maximum[, int minimum], ErrorMessage="____")]
+        //[Range(double minimum, double maximum, ErrorMessage="___")]
+        //[RegularExpression("expression", ErrorMessage="____")]
+
         [Key]
         public int TrackId { get; set; }
+
+        [Required(ErrorMessage = "Name is a required feild.")]
+        [StringLength(200, ErrorMessage = "Name is too Long. Max Characters: 200")]
         public string Name { get; set; }
+
+        [Range(1.0, double.MaxValue, ErrorMessage = "Invalid Album. Try selection again.")]
         public int? AlbumId { get; set; }
+
+        [Required(ErrorMessage = "Media Type is a required feild")]
+        [Range(1.0, double.MaxValue, ErrorMessage = "Invalid Media Type. Please try again.")]
         public int MediaTypeId { get; set; }
+
+        [Range(1.0, double.MaxValue, ErrorMessage = "Invalid Genre. Please try again.")]
         public int? GenreId { get; set; }
+
+        [StringLength(220, ErrorMessage = "Composer is to long. Max Characters: 220.")]
         public string Composer { get; set; }
+
+        [Required(ErrorMessage = "MilliSeconds is a required feild")]
+        [Range(1.0, double.MaxValue, ErrorMessage = "Invalid MSec. Must be greater than 0")]
         public int Milliseconds { get; set; }
+
+        [Range(1.0, double.MaxValue, ErrorMessage = "Invalid Bytes. Must be greater than 0")]
         public int? Bytes { get; set; }
+
+        [Required(ErrorMessage = "UnitPrice is a required feild")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Invalid UnitPrice. Must be greater than 0")]
         public decimal UnitPrice { get; set; }
 
         //navigation properties for use by Linq

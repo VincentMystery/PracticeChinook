@@ -1,9 +1,15 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="TrackCRUD.aspx.cs" Inherits="Admin_EntityMaintenance_TrackCRUD" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="TrackCRUD.aspx.cs"
+    Inherits="Admin_EntityMaintenance_TrackCRUD" %>
+
+<%@ Register Src="~/UserControls/MessageUserControl.ascx" TagPrefix="uc1" TagName="MessageUserControl" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <div class="jumbotron">
         <h3>Wired List View CRUD</h3>
     </div>
+
+    <uc1:MessageUserControl runat="server" ID="MessageUserControl" />
 
     <div class="row">
         <asp:ListView ID="TrackList"
@@ -287,7 +293,10 @@
         InsertMethod="AddTrack"
         OldValuesParameterFormatString="original_{0}"
         SelectMethod="ListTracks"
-        TypeName="ChinookSystem.BLL.TrackController">
+        TypeName="ChinookSystem.BLL.TrackController"
+        OnDeleted="CheckForException"
+        OnInserted="CheckForException"
+        OnUpdated="CheckForException">
     </asp:ObjectDataSource>
 
     <asp:ObjectDataSource ID="AlbumListODs" runat="server"
